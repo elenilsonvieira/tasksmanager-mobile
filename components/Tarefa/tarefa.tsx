@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 import { ITarefa } from '../../interfaces/ITarefa';
 
 interface TarefaProps {
@@ -25,14 +25,14 @@ export default function Tarefas({ tarefa, onDelete, onEdit }: TarefaProps) {
           style={styles.editButton} 
           onPress={() => onEdit(tarefa)}
         >
-          <Icon name="pencil-outline" size={24} color="#60A5FA" />
+          <Ionicons name="pencil-outline" size={24} color="#60A5FA" />
         </TouchableOpacity>
         
         <TouchableOpacity 
           style={styles.deleteButton} 
           onPress={() => onDelete(tarefa.id)}
         >
-          <Icon name="trash-outline" size={24} color="#ff3b30" />
+          <Ionicons name="trash-outline" size={24} color="#ff3b30" />
         </TouchableOpacity>
       </View>
     </View>

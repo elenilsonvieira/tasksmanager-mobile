@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 import Tarefas from '../../components/Tarefa/tarefa';
 import { ITarefa } from '../../interfaces/ITarefa';
 
@@ -142,7 +142,7 @@ export default function Home() {
       
       <Link href="/Screens/Formulario" asChild>
         <TouchableOpacity style={styles.fab}>
-          <Icon name="add" size={30} color="#fff" />
+          <Ionicons name="add" size={30} color="#fff" />
         </TouchableOpacity>
       </Link>
     </View>
