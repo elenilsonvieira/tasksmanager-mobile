@@ -1,11 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Button, ScrollView, StyleSheet, Text, TextInput, View
+  Button, ScrollView, StyleSheet, Text, TextInput, View, Alert
 } from 'react-native';
 import { ITarefa } from '../../interfaces/ITarefa';
+import { notifyTaskAssignment } from '../../components/services/notification';
 
 export default function Formulario() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function Formulario() {
   const [descricao, setDescricao] = useState('');
   const [status, setStatus] = useState('');
   const [responsavel, setResponsavel] = useState('');
+  const [dataOriginal, setDataOriginal] = useState<Date | null>(null);
 
   const statusOptions = [
     { label: 'Selecione...', value: '' },
@@ -22,19 +24,20 @@ export default function Formulario() {
     { label: 'Concluída', value: 'Concluída' },
   ];
   
-  React.useEffect(() => {
+  useEffect(() => {
     if (params.editarTarefa) {
       const tarefa = JSON.parse(params.editarTarefa as string);
       setNomeDaTarefa(tarefa.nomeDaTarefa);
       setDescricao(tarefa.descricao);
       setStatus(tarefa.status);
       setResponsavel(tarefa.responsavel);
+      setDataOriginal(new Date(tarefa.dataHora));
     }
   }, [params.editarTarefa]);
 
   const handleSalvar = async () => {
     if (!nomeDaTarefa || !descricao || !status || !responsavel) {
-      alert('Preencha todos os campos!');
+      Alert.alert('Atenção', 'Preencha todos os campos!');
       return;
     }
 
@@ -45,7 +48,7 @@ export default function Formulario() {
       nomeDaTarefa,       
       descricao,         
       status,
-      dataHora: params.id ? new Date() : new Date(),
+      dataHora: dataOriginal || new Date(),
       responsavel,         
     };
 
@@ -53,7 +56,6 @@ export default function Formulario() {
       const savedTarefas = await AsyncStorage.getItem('@tarefas');
       const currentTarefas = savedTarefas ? JSON.parse(savedTarefas) : [];
       
-     
       const updatedTarefas = params.id 
         ? currentTarefas.filter((t: ITarefa) => t.id !== id)
         : currentTarefas;
@@ -63,15 +65,24 @@ export default function Formulario() {
       await AsyncStorage.setItem('@tarefas', JSON.stringify(finalTarefas));
       
       
+      if (!params.id) {
+        await notifyTaskAssignment({
+          responsavel: novaTarefa.responsavel,
+          nomeDaTarefa: novaTarefa.nomeDaTarefa
+        });
+      }
+      
+      
       setNomeDaTarefa('');
       setDescricao('');
       setStatus('');
       setResponsavel('');
+      setDataOriginal(null);
 
       router.push('/(tabs)/Home');
     } catch (error) {
       console.error('Erro ao salvar tarefa:', error);
-      alert('Ocorreu um erro ao salvar a tarefa');
+      Alert.alert('Erro', 'Ocorreu um erro ao salvar a tarefa');
     }
   };
 
