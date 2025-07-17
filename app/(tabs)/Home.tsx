@@ -107,6 +107,23 @@ export default function Home() {
     });
   };
 
+  const sortTarefasByStatus = (tarefas: ITarefa[]) => {
+    const statusOrder = ["Pendente", "Em andamento", "Concluída"];
+
+    return [...tarefas].sort((a, b) => {
+      // Ordena primeiro pelo status (Pendente > Em andamento > Concluída)
+      const statusA = statusOrder.indexOf(a.status);
+      const statusB = statusOrder.indexOf(b.status);
+
+      if (statusA !== statusB) {
+        return statusA - statusB;
+      }
+
+      // Se o status for igual, ordena pela data mais recente
+      return new Date(b.dataHora).getTime() - new Date(a.dataHora).getTime();
+    });
+  };
+
   return (
     <View style={styles.container}>
   
@@ -119,7 +136,7 @@ export default function Home() {
       <View style={styles.content}>
         {tarefas.length > 0 ? (
           <FlatList
-            data={tarefas}
+            data={sortTarefasByStatus(tarefas)}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <Tarefas 
