@@ -4,5 +4,8 @@ export interface ITarefa {
   descricao: string;
   status: string;
   dataHora: Date;
+  dataEntrega: Date;
   responsavel: string;
+  responsavelId?: string;
+  equipeId?: string;
 }

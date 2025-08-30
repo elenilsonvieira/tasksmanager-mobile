@@ -1,55 +1,65 @@
-import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Drawer } from 'expo-router/drawer';
+import { DrawerToggleButton } from '@react-navigation/drawer';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-export default function TabLayout() {
+import { Colors } from '@/constants/Colors';
+import { useColorScheme } from '@/hooks/useColorScheme';
+import CustomDrawerContent from '@/components/CustomDrawerContent';
+
+const BLUE = '#5BA7FF';
+
+export default function DrawerLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <Tabs
+    <Drawer
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
+        headerShown: true,
+        headerStyle: { backgroundColor: BLUE },
+        headerTintColor: '#fff',
+        headerTitleAlign: 'center',
+        headerLeft: (props) => (
+          <DrawerToggleButton {...props} tintColor="#fff" />
+        ),
+        drawerActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        drawerStyle: {
+          width: 260,
+          ...(Platform.OS === 'ios' ? { paddingTop: 8 } : {}),
+        },
+      }}
+    >
+      <Drawer.Screen
+        name="(tabs)/Equipe"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Sistema de Equipes',
+          drawerIcon: ({ color, size }) => (
+            <FontAwesome5 name="users" size={size ?? 22} color={color} />
+          ),
         }}
       />
-      <Tabs.Screen
-        name="explore"
+
+      <Drawer.Screen
+        name="(tabs)/Atarefados"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Sistema de Tarefas',
+          drawerIcon: ({ color, size }) => (
+            <FontAwesome5 name="user" size={size ?? 22} color={color} />
+          ),
         }}
       />
-      <Tabs.Screen
-              name="Home"
-              options={{
-                title: 'Task List',
-                  tabBarIcon: ({ color }) => (
-                      <FontAwesome5 name="clipboard-list" size={28} color={color} />
-                    ),
-              }}
-            />
-    </Tabs>
+
+      <Drawer.Screen
+        name="(tabs)/Calendario"
+        options={{
+          title: 'Calendário',
+          drawerIcon: ({ color, size }) => (
+            <FontAwesome5 name="calendar-alt" size={size ?? 22} color={color} />
+          ),
+        }}
+      />
+    </Drawer>
   );
 }

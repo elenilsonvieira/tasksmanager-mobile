@@ -1,6 +1,8 @@
 export interface IAtarefado {
-    id: number;
+    id: string;
     nome: string;
-    tarefa: string;
+    email: string,
+    cpf: string,
+    nascimento: Date
   }
   
