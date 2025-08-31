@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView, Image } from 'react-native';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'expo-router';
-import ImagePicker from 'expo-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import { Feather } from '@expo/vector-icons';
 
@@ -9,6 +9,17 @@ export default function ProfileScreen() {
   const { user, userData, loading, signOut, updateProfile } = useAuth();
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
+
+  const formatarDataNascimento = (dataString: string) => {
+    if (!dataString) return 'Não informado';
+    
+    try {
+      const data = new Date(dataString);
+      return data.toLocaleDateString('pt-BR');
+    } catch (error) {
+      return dataString;
+    }
+  };
 
   const handleSignOut = async () => {
     try {
@@ -118,6 +129,13 @@ export default function ProfileScreen() {
       <View style={styles.card}>
         <Text style={styles.label}>CPF</Text>
         <Text style={styles.value}>{userData?.cpf || 'Não informado'}</Text>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.label}>Data de Nascimento</Text>
+        <Text style={styles.value}>
+          {userData?.nascimento ? formatarDataNascimento(userData.nascimento) : 'Não informado'}
+        </Text>
       </View>
 
       <TouchableOpacity style={styles.logoutButton} onPress={handleSignOut}>

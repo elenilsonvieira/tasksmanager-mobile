@@ -6,9 +6,8 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 interface UserData {
   nome: string;
   cpf: string;
+  nascimento: string;
   email: string;
-  dataCriacao: Date;
-  telefone?: string;
   avatar?: string;
 }
 
@@ -44,6 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUserData({
           nome: data.nome || '',
           cpf: data.cpf || '',
+          nascimento: data.nascimento || '',
           email: data.email || '',
           avatar: data.avatar || ''
         });

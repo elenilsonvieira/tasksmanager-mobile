@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
@@ -21,7 +22,6 @@ import ConfirmModal from "@/components/modal/ConfirmModal";
 import Convite from "@/components/Equipe/Convite";
 import UsuarioEquipe from "@/components/Equipe/UsuarioEquipe";
 import ModalUsuarios from "@/components/Equipe/ModalUsuarios";
-import { IAtarefado } from "@/interfaces/IAtarefado";
 import { IEquipe } from "@/interfaces/IEquipe";
 import { IConvite } from "@/interfaces/IConvite";
 import { IUsuarioEquipe } from "@/interfaces/IUsuarioEquipe";
@@ -174,9 +174,7 @@ export default function Home() {
   const [usuariosEquipe, setUsuariosEquipe] = useState<IUsuarioEquipe[]>([]);
   const [convites, setConvites] = useState<IConvite[]>([]);
   const [modalUsuariosVisible, setModalUsuariosVisible] = useState(false);
-  const [usuariosDisponiveis, setUsuariosDisponiveis] = useState<IAtarefado[]>(
-    []
-  );
+
   const [showMemberConfirmModal, setShowMemberConfirmModal] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState<string | null>(null);
   const [equipeAtual, setEquipeAtual] = useState<IEquipe | null>(null);
@@ -193,18 +191,6 @@ export default function Home() {
     } catch (error) {
       console.error("Erro ao obter equipe atual:", error);
       return null;
-    }
-  };
-
-  const carregarUsuarios = async () => {
-    const data = await AsyncStorage.getItem("@atarefados");
-    if (data) {
-      try {
-        const usuarios = JSON.parse(data) as IAtarefado[];
-        setUsuariosDisponiveis(usuarios);
-      } catch (err) {
-        console.error("Erro ao carregar atarefados:", err);
-      }
     }
   };
 
@@ -682,7 +668,6 @@ export default function Home() {
   useEffect(() => {
     const carregarDados = async () => {
       try {
-        await carregarUsuarios();
         const equipe = await obterEquipeAtual();
         if (equipe) {
           await carregarConvites();
