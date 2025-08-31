@@ -13,7 +13,6 @@ import {
   FlatList,
 } from "react-native";
 import { ITarefa } from "../../interfaces/ITarefa";
-import { IAtarefado } from "../../interfaces/IAtarefado";
 import Toast from "react-native-toast-message";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -35,7 +34,6 @@ export default function Formulario() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [pickerMode, setPickerMode] = useState<"date" | "time">("date");
-  const [atarefados, setAtarefados] = useState<IAtarefado[]>([]);
   const [membrosEquipe, setMembrosEquipe] = useState<IUsuarioEquipe[]>([]);
   const [showResponsavelDropdown, setShowResponsavelDropdown] = useState(false);
   const [equipeId, setEquipeId] = useState<string | null>(null);
@@ -56,18 +54,6 @@ export default function Formulario() {
     return true;
   };
 
-  const carregarAtarefados = async () => {
-    const data = await AsyncStorage.getItem("@atarefados");
-    if (data) {
-      try {
-        const lista = JSON.parse(data) as IAtarefado[];
-        setAtarefados(lista);
-      } catch (err) {
-        console.error("Erro ao carregar atarefados:", err);
-      }
-    }
-  };
-
   // ✅ usa convites aceitos como fallback e evita erro de TS
   const carregarMembrosEquipe = async () => {
     try {
@@ -81,9 +67,7 @@ export default function Formulario() {
       const equipesRaw = await AsyncStorage.getItem("@equipes");
       const equipes = equipesRaw ? JSON.parse(equipesRaw) : [];
       const equipe = equipes.find((e: any) => e.id === equipeAtual.id) || equipeAtual;
-
-      const atRaw = await AsyncStorage.getItem("@atarefados");
-      const todosAtarefados: IAtarefado[] = atRaw ? JSON.parse(atRaw) : [];
+     
 
       const membrosField = equipe?.membros ?? [];
       const membroIds: string[] = Array.isArray(membrosField)
@@ -104,17 +88,10 @@ export default function Formulario() {
         ])
       );
 
-      const atMap: Map<string, IUsuarioEquipe> = new Map(
-        todosAtarefados.map((a: IAtarefado) => [
-          a.id,
-          { id: a.id, nome: a.nome, email: a.email },
-        ])
-      );
+
 
       // 👉 Retorno garantido de IUsuarioEquipe (sem undefined)
       const membros: IUsuarioEquipe[] = membroIds.map((id) => {
-        const doAt = atMap.get(id);
-        if (doAt) return doAt;
         const doConvite = convitesMap.get(id);
         if (doConvite) return doConvite;
         return { id, nome: `${id.slice(0, 6)}...`, email: "" };
@@ -130,7 +107,6 @@ export default function Formulario() {
   useEffect(() => {
     const carregarDados = async () => {
       try {
-        await carregarAtarefados();
         await carregarMembrosEquipe();
 
         if (params.equipeId) {
