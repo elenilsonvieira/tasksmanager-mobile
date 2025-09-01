@@ -8,7 +8,6 @@ import {
   Text,
   TextInput,
   View,
-  Alert,
 } from "react-native";
 import { IEquipe } from "../../interfaces/IEquipe";
 import Toast from "react-native-toast-message";
@@ -29,7 +28,14 @@ export default function FormularioEquipe() {
 
   const handleSalvar = async () => {
     if (!nomeDaEquipe.trim()) {
-      Alert.alert("Atenção", "O nome da equipe é obrigatório!");
+      Toast.show({
+        type: "error",
+        text1: "Atenção",
+        text2: "O nome da equipe é obrigatório!",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
       return;
     }
 
@@ -81,7 +87,14 @@ export default function FormularioEquipe() {
       }, 1500);
     } catch (error) {
       console.error("Erro ao salvar equipe:", error);
-      Alert.alert("Erro", "Ocorreu um erro ao salvar a equipe");
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Ocorreu um erro ao salvar a equipe",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
     }
   };
 

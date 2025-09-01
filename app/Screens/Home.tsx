@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
@@ -6,7 +5,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Alert,
   ScrollView,
 } from "react-native";
 import { db } from "@/config/firebaseConfig";
@@ -262,14 +260,25 @@ export default function Home() {
         });
       } else {
         console.error("Erro backend:", data);
-        Alert.alert("Erro", data.error || "Erro ao enviar convite");
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: data.error || "Erro ao enviar convite",
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 70,
+        });
       }
     } catch (err) {
       console.error("Erro ao conectar ao servidor:", err);
-      Alert.alert(
-        "Erro",
-        "Não foi possível conectar ao servidor de e-mail.\nVerifique se o servidor está rodando e acessível."
-      );
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Não foi possível conectar ao servidor de e-mail.\nVerifique se o servidor está rodando e acessível.",
+        visibilityTime: 4000,
+        autoHide: true,
+        topOffset: 70,
+      });
     }
   };
 
@@ -277,7 +286,14 @@ export default function Home() {
     try {
       const equipe = await obterEquipeAtual();
       if (!equipe) {
-        Alert.alert("Erro", "Nenhuma equipe selecionada");
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: "Nenhuma equipe selecionada",
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 70,
+        });
         return;
       }
 
@@ -302,7 +318,14 @@ export default function Home() {
         (c) => c.usuarioId === usuarioId && c.status === "pendente"
       );
       if (conviteExistente) {
-        Alert.alert("Aviso", "Já existe um convite pendente para este e-mail");
+        Toast.show({
+          type: "warning",
+          text1: "Aviso",
+          text2: "Já existe um convite pendente para este e-mail",
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 70,
+        });
         return;
       }
 
@@ -341,7 +364,14 @@ export default function Home() {
       });
     } catch (err) {
       console.error("Erro ao enviar convite:", err);
-      Alert.alert("Erro", "Não foi possível enviar o convite");
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Não foi possível enviar o convite",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
     }
   };
 
@@ -357,7 +387,14 @@ export default function Home() {
 
       const userDoc = await getDoc(doc(db, "usuarios", convite.usuarioId));
       if (!userDoc.exists()) {
-        Alert.alert("Erro", "Usuário não encontrado");
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: "Usuário não encontrado",
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 70,
+        });
         return;
       }
 
@@ -417,7 +454,14 @@ export default function Home() {
       });
     } catch (error) {
       console.error("Erro ao aceitar convite:", error);
-      Alert.alert("Erro", "Ocorreu um erro ao aceitar o convite");
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Ocorreu um erro ao aceitar o convite",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
     }
   };
 
@@ -465,7 +509,14 @@ export default function Home() {
       });
     } catch (error) {
       console.error("Erro ao recusar convite:", error);
-      Alert.alert("Erro", "Ocorreu um erro ao recusar o convite");
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Ocorreu um erro ao recusar o convite",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
     }
   };
 
@@ -475,7 +526,14 @@ export default function Home() {
       const equipeAtual = atualRaw ? JSON.parse(atualRaw) : null;
       const teamId = equipeAtual?.id;
       if (!teamId) {
-        Alert.alert('Erro', 'Equipe não encontrada.');
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: "Equipe não encontrada.",
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 70,
+        });
         return;
       }
 
@@ -483,7 +541,14 @@ export default function Home() {
       const equipes = eqRaw ? JSON.parse(eqRaw) : [];
       const idx = equipes.findIndex((e: any) => e.id === teamId);
       if (idx === -1) {
-        Alert.alert('Erro', 'Equipe não encontrada.');
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: "Equipe não encontrada.",
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 70,
+        });
         return;
       }
 
@@ -499,7 +564,14 @@ export default function Home() {
       Toast.show({ type: 'info', text1: 'Convite excluído', topOffset: 70 });
     } catch (e) {
       console.error(e);
-      Alert.alert('Erro', 'Falha ao excluir convite.');
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Falha ao excluir convite.",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
     }
   };
 
@@ -542,7 +614,14 @@ export default function Home() {
       });
     } catch (error) {
       console.error("Erro ao remover membro:", error);
-      Alert.alert("Erro", "Ocorreu um erro ao remover o membro");
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Ocorreu um erro ao remover o membro",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
     } finally {
       setShowMemberConfirmModal(false);
       setMemberToRemove(null);
@@ -629,7 +708,14 @@ export default function Home() {
       });
     } catch (error) {
       console.error("Erro ao excluir tarefa:", error);
-      Alert.alert("Erro", "Não foi possível excluir a tarefa");
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Não foi possível excluir a tarefa",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
     } finally {
       setShowConfirmModal(false);
       setTarefaToDelete(null);

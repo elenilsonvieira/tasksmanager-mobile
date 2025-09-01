@@ -8,7 +8,6 @@ import {
   Text,
   TextInput,
   View,
-  Alert,
   TouchableOpacity,
   FlatList,
 } from "react-native";
@@ -44,11 +43,14 @@ export default function Formulario() {
   const validarData = (data: Date): boolean => {
     const agora = new Date();
     if (data < agora) {
-      Alert.alert(
-        "Data inválida",
-        "Não é possível salvar tarefas com datas/horários no passado",
-        [{ text: "OK" }]
-      );
+      Toast.show({
+        type: "error",
+        text1: "Data inválida",
+        text2: "Não é possível salvar tarefas com datas/horários no passado",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
       return false;
     }
     return true;
@@ -168,7 +170,14 @@ export default function Formulario() {
 
   const handleSalvar = async () => {
     if (!nomeDaTarefa.trim() || !descricao.trim() || !responsavel.trim()) {
-      Alert.alert("Atenção", "Preencha todos os campos corretamente!");
+      Toast.show({
+        type: "error",
+        text1: "Atenção",
+        text2: "Preencha todos os campos corretamente!",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
       return;
     }
 
@@ -177,7 +186,14 @@ export default function Formulario() {
     }
 
     if (!equipeId) {
-      Alert.alert("Erro", "Nenhuma equipe selecionada");
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Nenhuma equipe selecionada",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
       return;
     }
 
@@ -232,7 +248,14 @@ export default function Formulario() {
       }, 1500);
     } catch (error) {
       console.error("Erro ao salvar tarefa:", error);
-      Alert.alert("Erro", "Ocorreu um erro ao salvar a tarefa");
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Ocorreu um erro ao salvar a tarefa",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
     }
   };
 

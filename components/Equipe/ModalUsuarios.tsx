@@ -1,4 +1,3 @@
-// ModalUsuarios.tsx (Refatorado)
 import React, { useState } from "react";
 import {
   Modal,
@@ -6,10 +5,10 @@ import {
   Text,
   View,
   StyleSheet,
-  Alert,
   TextInput,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
 
 interface ModalUsuariosProps {
   visible: boolean;
@@ -26,7 +25,14 @@ export default function ModalUsuarios({
 
   const handleConfirmar = async () => {
     if (!email) {
-      Alert.alert("Erro", "Informe o e-mail do usuário");
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Informe o e-mail do usuário",
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: 70,
+      });
       return;
     }
     onSelecionar(email.trim().toLowerCase());
@@ -64,6 +70,7 @@ export default function ModalUsuarios({
           />
         </View>
       </View>
+      <Toast/>
     </Modal>
   );
 }
