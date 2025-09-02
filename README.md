@@ -3,7 +3,9 @@
 <img src="https://res.cloudinary.com/drb0irolz/image/upload/v1756353678/Logo_Gimp_2_e5qmpc.png" alt="SoftTech Logo" width="400"/>
 
 ## 📌 Descrição  
-O **SoftTech Tasks Manager** é um aplicativo mobile de **gerenciamento de tarefas para equipes**, projetado para otimizar a organização de atividades, facilitar a comunicação e melhorar a produtividade coletiva.  
+O **Task Manager** é um aplicativo mobile desenvolvido em **React Native com Expo** que tem como objetivo **gerenciar tarefas em equipes**.
+
+Com ele, você pode organizar atividades, acompanhar prazos em um calendário, gerenciar equipes e melhorar a colaboração entre membros.
 
 ### ✨ Principais funcionalidades:
 - ✅ Cadastro e login de usuários (Firebase Authentication)  
@@ -84,6 +86,11 @@ Abra o app no **Expo Go** no celular ou rode em um emulador Android/iOS.
 ├── scripts/             # Scripts utilitários
 └── ...
 ```
+---
+
+## 🌐 Backend Relacionado
+Este aplicativo consome o serviço de envio de e-mails que está disponível no repositório:  
+👉 [SoftTech Email Service](https://github.com/elenilsonvieira/tasksmanager-back)
 
 ---
 
